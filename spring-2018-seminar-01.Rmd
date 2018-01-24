@@ -1,7 +1,7 @@
 ---
 title: "DSS Spring 2018 Seminar 1"
 authors: Chris & Christy
-output: html_document
+output: html_notebook
 ---
 
 ## R and RStudio Basics
@@ -68,7 +68,7 @@ The [tidyverse](http://tidyverse.org) is actually a family of packages for R tha
 library(dplyr)
 ```
 
-Now, try loading the `devtools` package (used for tidying data):
+Now, try loading the `devtools` package (used for package development):
 
 ```{r}
 
@@ -176,42 +176,42 @@ The function takes a data frame object named `.data`, removes the duplicate id v
 esp_cleanNames <- function(.data){
   
   .data %>%
-    select(-V1) %>%
-    rename(id = `Identification Number`) %>%
-    rename(fullName = `Full Name`) %>%
-    rename(firstName = `First Name`) %>%
-    rename(lastName = `Last Name`) %>%
+    select(-X) %>%
+    rename(id = Identification.Number) %>%
+    rename(fullName = Full.Name) %>%
+    rename(firstName = First.Name) %>%
+    rename(lastName = Last.Name) %>%
     rename(gender = Gender) %>%
-    rename(spanishCourse = `Spanish Course`) %>%
-    rename(sec1010 = `SPAN 1010 section`) %>%
-    rename(sec1020 = `SPAN 1020 section`) %>%
-    rename(sec2010 = `SPAN 2010 section`) %>%
-    rename(classStats = `Class Status`) %>%
-    rename(prevStudy = `Previous study`) %>%
-    rename(sluSpan = `Taken at SLU`) %>%
+    rename(spanishCourse = Spanish.Course) %>%
+    rename(sec1010 = SPAN.1010.section) %>%
+    rename(sec1020 = SPAN.1020.section) %>%
+    rename(sec2010 = SPAN.2010.section) %>%
+    rename(classStats = Class.Status) %>%
+    rename(prevStudy = Previous.study) %>%
+    rename(sluSpan = Taken.at.SLU) %>%
     rename(placement = Placement) %>%
-    rename(placeScore = `Placement score`) %>%
-    rename(nativeLang = `Native language`) %>%
-    rename(nativeLangOthr = `Other native language`) %>%
-    rename(homeLang = `Home language`) %>%
-    rename(homeLangOthr = `Other home language`) %>%
+    rename(placeScore = Placement.score) %>%
+    rename(nativeLang = Native.language) %>%
+    rename(nativeLangOthr = Other.native.language) %>%
+    rename(homeLang = Home.language) %>%
+    rename(homeLangOthr = Other.home.language) %>%
     rename(major = Major) %>%
-    rename(majorOther = `Other major`) %>%
+    rename(majorOther = Other.major) %>%
     rename(minor = Minor) %>%
-    rename(minorOther = `Other minor`) %>%
-    rename(spanInterest = `Interested major/minor`) %>%
-    rename(community = `Community interaction`) %>%
-    rename(work = `Work learning`) %>%
-    rename(attHispanic = `Attitude Hispanic community`) %>%
-    rename(attPrior = `Attitude previous course`) %>%
-    rename(attLearn = `Attitude learning Spanish`) %>%
-    rename(interest = `Interest FL`) %>%
+    rename(minorOther = Other.minor) %>%
+    rename(spanInterest = Interested.major.minor) %>%
+    rename(community = Community.interaction) %>%
+    rename(work = Work.learning) %>%
+    rename(attHispanic = Attitude.Hispanic.community) %>%
+    rename(attPrior = Attitude.previous.course) %>%
+    rename(attLearn = Attitude.learning.Spanish) %>%
+    rename(interest = Interest.FL) %>%
     rename(desire = Desire) %>%
-    rename(emplyment = `Employment use`) %>%
-    rename(inClass = `In class feeling`) %>%
-    rename(speaking = `Speaking Spanish feeling`) %>%
-    rename(cultures = `Cultures different`) %>%
-    rename(proficient = `Proficient useful`) -> .data
+    rename(emplyment = Employment.use) %>%
+    rename(inClass = In.class.feeling) %>%
+    rename(speaking = Speaking.Spanish.feeling) %>%
+    rename(cultures = Cultures.different) %>%
+    rename(proficient = Proficient.useful) -> .data
   
   return(.data)
 }
