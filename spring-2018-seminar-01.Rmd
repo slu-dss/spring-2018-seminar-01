@@ -1,0 +1,226 @@
+---
+title: "DSS Spring 2018 Seminar 1"
+authors: Chris & Christy
+output: html_document
+---
+
+## R and RStudio Basics
+
+R is a programming language that is highly extensible and flexible - it can be adpated to work with everything from textual data to statistical and spatial data. [RStudio](http://rstudio.com) is a user interface for R that makes working with the language *much* easier. The first three features below that we'll discuss briefly are all aspects of RStudio - they are not part of the basic R releases.
+
+### R Notebooks
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert* button on the toolbar and choosing `R`.
+
+When you save the notebook, an `html` file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the `html` file). The `html` file will always be saved in the directory that your R Markdown file is saved in.
+
+If you want to create a new R Notebook, you can do so by going to `File > New File > R Notebook`.
+
+### R Markdown
+All of the writing in this document uses [R Markdown](http://rmarkdown.rstudio.com) syntax. We use Markdown because it is simple to learn and allows us to work in plain text files so we aren't dependent on proprietary (and expensive!) software. RStudio can render Markdown into various formats like `html` and `pdf`.
+
+The pair of brackets matched with the pair of paraentheses in the previous paragraph is how we hyperlink references. You won't see the url when the text is renderd - the text "R Markdown" will be a hyperlink that you can click on.
+
+We use the number sign for headings where one number sign is the highest level heading and six number signs are the lowest level headings. 
+
+*This is italicized text*, **this is bold text**, and `this is text in a typewriter font`. We use the `typewriter font` to refer to file, variable, function, and package names.
+
+* We 
+* can
+* also
+* make
+* bulleted
+* lists.
+
+### R Projects
+
+R projects create a home for your analyses. When you set a R project up, it will change the **working directory** to the project's directory. This means that all of the data you save from RStudio will be saved there by default. It also means that you can open files saved in that directory without needing to worry about file paths. 
+
+We'll give you an R project directory to download for each seminar session. However, if you want to create a new project for your own work, go to `File > New Project...` and follow the prompts. You can create a new project directory, associate a project with an existing directory, and even add `git` version control if you know how to use it!
+
+### R Packages
+
+Packages are the way that we can extend the base R software. They are typically written by R users and made available for free via a series of servers called CRAN. (We will eventually write our own package this semester!)
+
+To install new packages, we use the `install.packages()` function where the package name is written inside the parantheses in double quotes - "package name". For the `tidyverse` package, the installation function would look like this:
+
+```{r}
+install.packages("tidyverse")
+```
+
+We'll also need a package called `devtools`. Try writing out the installation script for that:
+
+```{r}
+
+```
+
+The [tidyverse](http://tidyverse.org) is actually a family of packages for R that share a philosophy on how data analysis *should* be done (they're very opinionated!). We will eventually (not today) use a couple of those packages. One of those is the `dplyr` package (used for data manipulation). We need to load packages explicity like this:
+
+```{r}
+library(dplyr)
+```
+
+Now, try loading the `devtools` package (used for tidying data):
+
+```{r}
+
+```
+
+Note: Packages can contain a variety of things: functions, datasets, etc. The package we will write will contain a dataset and several functions used to clean that data. 
+
+### Getting Help
+
+You can prefice packages or specific functions with a question mark to get specific help files. (Note: You can only do this for packages you have already installed and loaded.)
+
+```{r}
+?dplyr
+```
+
+Try getting the help file for `devtools`:
+
+```{r}
+
+```
+
+## Opening and Exploring Data in RStudio
+
+### Opening Data
+
+First, we'll want to load both of our data sets into R's memory. If we had already written our package and included the dataset, we could call it up directly from the package. Since we have not done that yet, we'll need to read in the .csv file where the data is saved using the `read.csv()` function. We do this by taking the data from `students.csv` and assigning it to an object named `spanish` by using the assignment operator (`<-`). This data comes from Spanish 1010-2010 students at SLU and includes information about level, motivation, language background, etc. It has been anonimized for instructional purposes. 
+
+```{r}
+spanish <- read.csv("students.csv", stringsAsFactors = FALSE)
+```
+
+This is how you would read-in your own data if it is saved as a .csv file. (Start typing 'read' to see other file formats.) Note that since we are using an R project, the **working directory** is automatically set to the folder where the .csv file is saved, so we do not have to specify a file path.  
+
+### Exploring Values
+
+There are a number of ways that we can explore our data. We can use the `View()` function to open up a spreadsheet-like view of our data:
+
+```{r}
+View(spanish)
+```
+
+We can also use the `str()` function (the "structure" function) to get a list of all variables present in our data frame:
+
+```{r}
+str(spanish)
+```
+
+The `summary` command gives us descriptive statistics, such as range, mean, median, etc. (in the case of continuous variables). This can be used for a specific variable or an entire dataset. 
+
+```{r}
+summary(spanish$Major)
+summary(spanish$Duration)
+summary(spanish)
+```
+
+Now try the `summary` command with a few other variables in the `spanish` dataframe.
+
+```{r}
+
+
+```
+
+## Writing basic functions
+
+Functions in R can be as simple as basic arithmetic (adding, subtracting, etc.) or as complex as making linear models or sophisticated graphics. While many packages exist with most of the functions you will need for data analaysis, one of the great things about R is that you can write your own functions, which may help to make certain processes more automatic. For instance, if you find yourself continuanlly doing the same few steps in data cleaning, you can write a function to do all of those steps at once, or one step to multiple variables at once. The basic structure of a function is the following: 
+
+myfunction <- function(argument1, argument2, ... ){
+statements
+return(object)
+}
+
+On the first line we specify the arguments (input).The second line is the statement (i.e. what we want the function to do). On the last line we specify what the function should return (output). In our example here, we are writing a function that takes a number and squares it:
+
+```{r}
+mysquare <- function(x) {
+  y <- x^2
+  return(y)
+}
+```
+
+Now we can test it out to make sure the function functions:
+
+```{r}
+mysquare(2)
+```
+
+Practice by writing your own function named `mythird` that takes a number to the third power (and then test out the function):
+
+```{r}
+
+```
+
+Try writing one more function of your choice (and test it out): 
+
+```{r}
+
+```
+
+## Functions for Data Wrangling
+The power of functions come into play when you need to replicate a process that is tedious or complex. For example, if the survey of Spanish students was given each semester, we would need to copy and paste code for renaming the long variable names into new analysis files for each semester. Instead, we can define a function that cleans the expected variable names and can be used as frequently as needed with no copy and pasting.
+
+The function takes a data frame object named `.data`, removes the duplicate id variable, and renames the remaining variables.
+
+```{r}
+esp_cleanNames <- function(.data){
+  
+  .data %>%
+    select(-V1) %>%
+    rename(id = `Identification Number`) %>%
+    rename(fullName = `Full Name`) %>%
+    rename(firstName = `First Name`) %>%
+    rename(lastName = `Last Name`) %>%
+    rename(gender = Gender) %>%
+    rename(spanishCourse = `Spanish Course`) %>%
+    rename(sec1010 = `SPAN 1010 section`) %>%
+    rename(sec1020 = `SPAN 1020 section`) %>%
+    rename(sec2010 = `SPAN 2010 section`) %>%
+    rename(classStats = `Class Status`) %>%
+    rename(prevStudy = `Previous study`) %>%
+    rename(sluSpan = `Taken at SLU`) %>%
+    rename(placement = Placement) %>%
+    rename(placeScore = `Placement score`) %>%
+    rename(nativeLang = `Native language`) %>%
+    rename(nativeLangOthr = `Other native language`) %>%
+    rename(homeLang = `Home language`) %>%
+    rename(homeLangOthr = `Other home language`) %>%
+    rename(major = Major) %>%
+    rename(majorOther = `Other major`) %>%
+    rename(minor = Minor) %>%
+    rename(minorOther = `Other minor`) %>%
+    rename(spanInterest = `Interested major/minor`) %>%
+    rename(community = `Community interaction`) %>%
+    rename(work = `Work learning`) %>%
+    rename(attHispanic = `Attitude Hispanic community`) %>%
+    rename(attPrior = `Attitude previous course`) %>%
+    rename(attLearn = `Attitude learning Spanish`) %>%
+    rename(interest = `Interest FL`) %>%
+    rename(desire = Desire) %>%
+    rename(emplyment = `Employment use`) %>%
+    rename(inClass = `In class feeling`) %>%
+    rename(speaking = `Speaking Spanish feeling`) %>%
+    rename(cultures = `Cultures different`) %>%
+    rename(proficient = `Proficient useful`) -> .data
+  
+  return(.data)
+}
+```
+
+Now we can apply this function to our data.
+
+```{r}
+tidySpanish <- esp_cleanNames(spanish)
+```
+
+Imagine if you had 10 semesters worth of survey material, all with the same variable names, that required the same process. The pipeline above is 38 lines long. For 10 semesters worth of data, that would be 380 lines of code. Instead, we need only 10 (one for each instance of the `esp_cleanNames()` function)! 
